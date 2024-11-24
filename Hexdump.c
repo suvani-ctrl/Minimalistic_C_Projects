@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <unistd.h>
+
 
 #define MAX_BUF_SIZE 1024 *1 //500 kilo byte
 
@@ -16,6 +18,24 @@ void hexdump(char *buffer, usize file_size)
 }
 usize file_open_and_read(char *filepath, char *buffer, usize size)
 {
+    //checking if the file exists
+
+    if(access(filepath, F_OK)!= 0)
+    {
+        fprintf(stderr,"[ERROR]: File '%s' does not exist !\n");
+        exit(1);
+    }
+
+    //IF THE FILE EXISTS  LETS OPEN THE FILE
+    
+    
+
+    File *f = fopen(filepath, "r"); //opening the file in Read  method
+    if(f == NULL)
+    {
+        fprintf(stderr,"[ERROR]: Could not opem file '%s' !\n", filepath);
+        exit(1);
+    }
     return 0;
 }
 
