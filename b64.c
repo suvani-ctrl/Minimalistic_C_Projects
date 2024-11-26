@@ -5,7 +5,7 @@
 // Base64 encoding table
 const char base64_table[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-// Function to encode data to base64
+
 void encode_base64(const unsigned char *input, int length, char *output) {
     int i = 0, j = 0;
     unsigned char a3[3];
