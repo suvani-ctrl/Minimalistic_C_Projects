@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Base64 encoding table
+
 const char base64_table[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 
