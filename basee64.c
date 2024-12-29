@@ -13,68 +13,51 @@ Instructions for Base64 Encoding in C
     Write the Base64-encoded data to the output file.
     Close both the input and output files.
 */
-#include <stdio.h>
-#include <stdlib.h>
-
-int file_existence(const char *filename)
-{
-    FILE *file = fopen(filename, "rb");
-    if (file)
-    {
-        fclose(file);
-        return 1;
-    }
-    else
-    {
-        perror("File does not exist");
-        return 0;
-    }
-}
-
-int main()
-{
+int main() {
     FILE *file;
-    char buffer[3];
-    size_t bytes_read;
-    char filename[100];
-
+    unsigned char buffer[1];  // Buffer to store each byte read from the file
+    int bytes_read;
+    int bit_count = 0;  // To count the bits and insert space after every 6 bits
+    int i;
+    
+    // Open the file for reading in binary mode
     printf("Enter the filename: ");
+    char filename[100];
     scanf("%s", filename);
+    file = fopen(filename, "rb");
 
-    if (file_existence(filename))
-    {
-        file = fopen(filename, "rb");
-        
-        if (file)
-        {
-            while ((bytes_read = fread(buffer, 1, 3, file)) > 0)
-            {
-     
-                for (size_t i = 0; i < bytes_read; i++)
-                {
-                    unsigned char byte = buffer[i];
-                    for (int j = 7; j >= 0; j--)
-                    {
-                        printf("%d", (byte >> j) & 1); //each bit (0 or 1)
-                    }
-                    printf(" "); // Space between each byte's binary representation
+    if (file) {
+        while ((bytes_read = fread(buffer, 1, 1, file)) > 0) {
+            unsigned char byte = buffer[0];
+
+            for (int j = 7; j >= 0; j--) {
+       
+                printf("%d", (byte >> j) & 1);
+
+                bit_count++;
+
+                if (bit_count == 6) {
+                    printf(" ");  
+                    bit_count = 0;  
                 }
-                printf("\n"); // New line after each chunk of 3 bytes
             }
+        }
 
-            fclose(file);
+        if (bit_count > 0 && bit_count < 6) {
+            printf(byte);
+
+            int required_bits = 6 - bit_count;
+            for(i=0; i<required_bits; i++)
+            {   
+                printf("0");
+                
+            }      
         }
-        else
-        {
-            printf("Error opening the file!\n");
-        }
-    }
-    else
-    {
-        printf("File does not exist or can't be opened!\n");
+
+        fclose(file);  
+    } else {
+        printf("Could not open file.\n");
     }
 
     return 0;
 }
-
-
