@@ -13,51 +13,82 @@ Instructions for Base64 Encoding in C
     Write the Base64-encoded data to the output file.
     Close both the input and output files.
 */
-int main() {
-    FILE *file;
-    unsigned char buffer[1];  // Buffer to store each byte read from the file
-    int bytes_read;
-    int bit_count = 0;  // To count the bits and insert space after every 6 bits
-    int i;
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+int binary_to_decimal( File *outputFile)
+{
+
+   
+    File = fopen("binary.txt","rb");
+    if(!outputFile)
+        perror("+File doesnt exists!");
+    while ((bytes_read_binary = fread(buffer,1,1,file))>0)
+    {
+
+    }
     
-    // Open the file for reading in binary mode
+    
+}
+
+
+int main() {
+    FILE *file, *outputFile;
+    unsigned char buffer[1];  
+    int bytes_read;
+    int bit_count = 0; 
+    int i;
+  
     printf("Enter the filename: ");
     char filename[100];
     scanf("%s", filename);
+   
     file = fopen(filename, "rb");
-
     if (file) {
+    
+        outputFile = fopen("binary.txt", "w");
+        if (!outputFile) {
+            printf("Could not open output file.\n");
+            fclose(file);
+            return 1;
+        }
+
+
         while ((bytes_read = fread(buffer, 1, 1, file)) > 0) {
             unsigned char byte = buffer[0];
 
             for (int j = 7; j >= 0; j--) {
-       
-                printf("%d", (byte >> j) & 1);
+             
+                fprintf(outputFile, "%d", (byte >> j) & 1); // Print each bit
 
                 bit_count++;
 
                 if (bit_count == 6) {
-                    printf(" ");  
+              
+                    fprintf(outputFile, " ");  
                     bit_count = 0;  
                 }
             }
         }
 
+    
         if (bit_count > 0 && bit_count < 6) {
-            printf(byte);
-
             int required_bits = 6 - bit_count;
-            for(i=0; i<required_bits; i++)
-            {   
-                printf("0");
-                
-            }      
+            for(i = 0; i < required_bits; i++) {
+                fprintf(outputFile, "0");  
+            }
         }
 
+  
         fclose(file);  
+        fclose(outputFile);  
+        printf("Output written to binary.txt\n");
     } else {
         printf("Could not open file.\n");
     }
+
+
 
     return 0;
 }
